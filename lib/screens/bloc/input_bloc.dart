@@ -32,6 +32,7 @@ class InputBloc extends Bloc<InputEvents,InputState>{
       print('The new list is $newList');
       bool isDuplicate = checkDuplicate(newList);
       print("The duplicate in the bloc state is $isDuplicate");
+      //emit updated string state
       emit(UpdatedStringState(characters: newList,isDuplicate: isDuplicate));
 
 
