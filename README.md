@@ -21,6 +21,27 @@ Ensure that your Flutter environment is properly configured, and you have the ne
 If you encounter any issues during the setup or execution of the code, check the Flutter documentation or seek assistance from the Flutter community.
 
 
+#                                                    Tests in Duplic Eraser
+
+This Flutter app, Duplic Eraser, includes tests to ensure the correctness and functionality of various components. These tests are written using the Flutter testing framework and cover different aspects of the app's behavior.
+
+#                                                     Testing Approach
+1. Reusable Text Widget Test
+   Test Description: This test verifies the behavior of the reusable text widget used throughout the app.
+   Type: Widget Test
+   Functionality Tested:
+      Rendering of text with specified style attributes such as font size and color.
+2. Bloc Functionality Test
+   Test Description: This test ensures the functionality of the Bloc pattern implemented in the app.
+   Type: Widget Test
+   Functionality Tested:
+      Interaction with input fields and buttons.
+      State management and data flow between input fields, Blocs, and widgets.
+      Handling of user inputs and submission.
+#                                                      How to Run Tests
+To run the tests locally, follow these steps:
+Navigate to the project directory in your terminal.
+Run the "flutter test" command to execute the tests
 
 
 
