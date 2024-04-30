@@ -25,6 +25,7 @@ class _RemoveDuplicateState extends State<RemoveDuplicate> {
   List<String> characters = [];// Stores characters of the string
   String userInput = ''; // Stores the original user input
   String modifiedString = ''; // Stores the modified string after duplicate removal
+  bool allDuplicateRemoved = false;
 
   final player = AudioPlayer();
 
@@ -36,9 +37,7 @@ class _RemoveDuplicateState extends State<RemoveDuplicate> {
     The first character in the string is accessed and we will try to remove it and call the duplicate 
     function in the bloc state which will in turn check if there is any duplicate character left''';
     context.read<InputBloc>().add(CheckDuplicateEvents(
-        char: widget.originalString[0],
         characters: widget.originalString.split(""),
-        index: 0
     ));
   }
 
@@ -70,6 +69,7 @@ class _RemoveDuplicateState extends State<RemoveDuplicate> {
                 //converting the character back to a list on storing it in the modified sting variable
                 modifiedString = state.characters.join();
                 characters = state.characters;//access the characters from the state
+                allDuplicateRemoved = !state.isDuplicate;// Update flag based on state
               }
               return Container(
                 margin: EdgeInsets.only(top: 15.h,left: 24.w,right: 24.w),
@@ -84,13 +84,14 @@ class _RemoveDuplicateState extends State<RemoveDuplicate> {
                         fontSize: 19.sp),
                     SizedBox(height: 30.h,),
                     Wrap(
-                      spacing: 5.w,
-                      runSpacing: 8.w,
+                      spacing: 10.w,
+                      runSpacing: 10.w,
                       children: characters.asMap().entries.map((entry) {
                         final int index = entry.key;
                         final char = entry.value;
                         return GestureDetector(
-                          onTap: (){
+                          onTap: allDuplicateRemoved
+                              ? null:(){
                             //Trigger the remove duplicate events to remove duplicate if any whenever a card is pressed
                             context.read<InputBloc>().add(RemoveDuplicateEvents(
                                 char: char,
@@ -98,18 +99,17 @@ class _RemoveDuplicateState extends State<RemoveDuplicate> {
                                 index: index
                             ));
                           },
-                          child: Container(
-                            margin: EdgeInsets.only(left: 18.w),
-                            width: 50.w,
+                          child: SizedBox(
+                            width: 70.w,
                             height: 40.h,
                             child: Card(
-                              color: Colors.purple,
+                              color: Colors.blue,
                               child: Padding(
                                 padding: EdgeInsets.all(8.w),
                                 child: Center(child: reusableText(
                                     text: char,
                                     color: Colors.white,
-                                    fontSize: 18.sp)),
+                                    fontSize: 20.sp)),
                               ),
                             ),
                           ),
@@ -123,15 +123,13 @@ class _RemoveDuplicateState extends State<RemoveDuplicate> {
               );
             },
             listener: (BuildContext context, state) async{
-              if(state is UpdatedStringState){
-                final checkDuplicate = state.isDuplicate;
+              if(state is UpdatedStringState && !state.isDuplicate){
                 //  Display a toast message when there is no duplicate remaining
-                if(!checkDuplicate){
                   Fluttertoast.showToast(
                       msg: "All Duplicates have been removed",
                       toastLength: Toast.LENGTH_SHORT,
                       gravity: ToastGravity.BOTTOM,
-                      timeInSecForIosWeb: 2,
+                      timeInSecForIosWeb: 3,
                       backgroundColor: Colors.blue,
                       textColor: Colors.white,
                       fontSize: 16.0.sp
@@ -149,7 +147,7 @@ class _RemoveDuplicateState extends State<RemoveDuplicate> {
                 }
           
               }
-            },
+
           ),
         ),
       ),

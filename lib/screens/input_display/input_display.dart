@@ -69,7 +69,8 @@ class _DisplayUserInputsState extends State<DisplayUserInputs> {
                           child: ListView.builder(
                             itemCount: state.userInputs.length,
                             itemBuilder: (context, index) {
-                              final userInput = state.userInputs[index];
+                              final userInputs = state.userInputs.reversed.toList();
+                              final userInput = userInputs[index];
                               return Container(
                                 margin: EdgeInsets.only(top: 10.h,left: 31.w,right: 31.w),
                                 height: 50.h,

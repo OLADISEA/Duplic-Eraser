@@ -6,10 +6,8 @@ class SubmitButtonPressed extends InputEvents{
 }
 
 class CheckDuplicateEvents extends InputEvents{
-  final String char;
   final List<String> characters;
-  final int index;
-  CheckDuplicateEvents({required this.char, required this.characters,required this.index});
+  CheckDuplicateEvents({required this.characters});
 }
 class RemoveDuplicateEvents extends InputEvents{
   final String char;

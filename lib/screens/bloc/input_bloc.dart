@@ -105,11 +105,12 @@ class InputBloc extends Bloc<InputEvents,InputState>{
 
   //This functions checks if any duplicate exists when the second page loads initially before the user taps on any card
   void _checkDuplicateAtInitialization(CheckDuplicateEvents event, Emitter<InputState> emit){
-    List<String> newList = _removeDuplicate(event, emit);
-    bool isDuplicate = checkDuplicate(newList);
+    //List<String> newList = _removeDuplicate(event, emit);
+    bool isDuplicate = checkDuplicate(event.characters);
     '''emit updated string state
     Here, the original list will be sent back to the state so that the value remains the same 
     before the user starts removing duplicate''';
+    print("check duplicate events");
     emit(UpdatedStringState(characters: event.characters,isDuplicate: isDuplicate));
 
   }

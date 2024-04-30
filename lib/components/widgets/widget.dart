@@ -59,11 +59,10 @@ Widget generalButton({required String text,required void Function() onTap}){
   return InkWell(
     onTap: onTap,
     child: Container(
-      //margin: EdgeInsets.only(left: 15.w),
       width: 280.w,
       height: 40.h,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10.r),
+        borderRadius: BorderRadius.circular(5.r),
         color: Colors.blue
       ),
       child: Center(
@@ -95,13 +94,13 @@ Widget backArrow(BuildContext context){
 
 Widget titlePage({required String text, required String image}){
   return  Padding(
-    padding: EdgeInsets.only(left: 90.w),
+    padding: EdgeInsets.only(left: 88.w),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Image.asset(image,width: 50.w,),
         SizedBox(height: 20.w,),
-        reusableText(text: text,fontSize: 18.sp,fontWeight: FontWeight.w700),
+        reusableText(text: text,fontSize: 24.sp,fontWeight: FontWeight.w700),
       ],
     ),
   );
