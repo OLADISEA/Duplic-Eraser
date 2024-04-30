@@ -1,7 +1,9 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:duplic_eraser/screens/bloc/input_events.dart';
 import 'package:duplic_eraser/screens/input_display/input_display.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -72,12 +74,16 @@ class _RemoveDuplicateState extends State<RemoveDuplicate> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(top: 15.h,left: 24.w,right: 24.w),
+                    padding: EdgeInsets.only(top: 15.h,),
                     child: Row(
                       children: [
-                        backArrow(context),
-                        SizedBox(width: 50.w,),
-                        reusableText(text: "Duplic Eraser",fontSize: 27.sp,fontWeight: FontWeight.w800)
+                        Expanded(
+                            child: backArrow(context)),
+                        SizedBox(width: 30.w,),
+                        
+                        Expanded(
+                            flex: 3,
+                            child: reusableText(text: "Duplic Eraser",fontSize: 27.sp,fontWeight: FontWeight.w800))
                       ],
                     ),
                   ),

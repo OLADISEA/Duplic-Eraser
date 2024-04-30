@@ -1,4 +1,6 @@
+import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
+import "package:flutter/widgets.dart";
 import "package:flutter_screenutil/flutter_screenutil.dart";
 
 
@@ -139,13 +141,19 @@ Widget informationText({required String userInput, required String modifiedStrin
       ),
       SizedBox(height: 15.h,),
       Row(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          reusableText(
-              text: "Characters",
-              fontSize: 20.sp,fontWeight: FontWeight.w600
+          Expanded(
+            child: reusableText(
+                text: "Characters",
+                fontSize: 18.sp,fontWeight: FontWeight.w600
+            ),
           ),
           SizedBox(width: 50.w),
-          reusableText(text: "click to remove duplicates",fontSize: 15.sp,color: Colors.blue)
+          
+          Expanded(
+              flex: 2,
+              child: reusableText(text: "click to remove duplicates",fontSize: 15.sp,color: Colors.blue))
         ],
       ),
     ],
