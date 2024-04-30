@@ -1,22 +1,25 @@
 import "package:flutter/material.dart";
 import "package:flutter_screenutil/flutter_screenutil.dart";
 
+
+//Widget for the text used throughout the app
 Widget reusableText({
   required String text,
-  double fontSize = 14,
+  double? fontSize,
   Color color = Colors.black,
   FontWeight fontWeight = FontWeight.w500
 }){
   return Text(text,
   style: TextStyle(
-    fontSize: fontSize,
+    fontFamily: 'Montserrat',
+    fontSize: fontSize?? 14.sp,
     color: color,
     fontWeight: fontWeight,
   ),);
 }
 
 
-
+//Widget for the input field
 Widget textField({
   required String text,
   required TextEditingController controller,
@@ -55,6 +58,7 @@ Widget textField({
 }
 
 
+//Widget for the submit button
 Widget generalButton({required String text,required void Function() onTap}){
   return InkWell(
     onTap: onTap,
@@ -73,25 +77,19 @@ Widget generalButton({required String text,required void Function() onTap}){
 
 }
 
-
+// Back arrow to go back to previous pages
 Widget backArrow(BuildContext context){
-  return Container(
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(5.r),
-      border: Border.all(
-        color: Colors.black38
-      )
-    ),
-    child: IconButton(
-        onPressed: (){
-          Navigator.pop(context);
-        },
-        icon: Icon(Icons.arrow_back,size: 27.sp,),
-    ),
+  return IconButton(
+      onPressed: (){
+        Navigator.pop(context);
+      },
+      icon: Icon(Icons.arrow_back,size: 27.sp,),
   );
 }
 
 
+
+//This widget displays the title page together with the app logo
 Widget titlePage({required String text, required String image}){
   return  Padding(
     padding: EdgeInsets.only(left: 88.w),
@@ -106,14 +104,96 @@ Widget titlePage({required String text, required String image}){
   );
 }
 
+
+//This widget includes some information on the second page
 Widget informationText({required String userInput, required String modifiedString}){
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      reusableText(text: "User Input Entered: $userInput",fontSize: 20.sp),
-      SizedBox(height: 20.h,),
-      reusableText(text: "Modified String: $modifiedString",fontSize: 20.sp),
-      SizedBox(height: 30.h,),
+      Container(
+        padding: EdgeInsets.only(left: 10.w,top: 15.h,bottom: 15.h),
+        width: 320.w,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5.r),
+          color: const Color(0XFFFAFAFA),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.15),
+              spreadRadius: 3,
+              blurRadius: 5,
+              offset: const Offset(1,2)
+            )
+          ],
+          border: Border.all(
+            color: Colors.grey.withOpacity(0.2)
+          )
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            reusableText(text: "User Input Entered: $userInput",fontSize: 16.sp),
+            SizedBox(height: 15.h,),
+            reusableText(text: "Modified String: $modifiedString",fontSize: 16.sp),
+          ],
+        ),
+      ),
+      SizedBox(height: 15.h,),
+      Row(
+        children: [
+          reusableText(
+              text: "Characters",
+              fontSize: 20.sp,fontWeight: FontWeight.w600
+          ),
+          SizedBox(width: 50.w),
+          reusableText(text: "click to remove duplicates",fontSize: 15.sp,color: Colors.blue)
+        ],
+      ),
     ],
   );
 }
+
+
+//A widget to add a divider below the title page
+Widget appDivider(){
+  return  Container(
+      margin: EdgeInsets.symmetric(vertical: 8.h),
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            spreadRadius: 1,
+            blurRadius: 3,
+            offset: const Offset(0, 1), // changes position of shadow
+          ),
+        ],
+      ),
+      child: const Divider(
+        height: 1,
+        thickness: 1,
+      ));
+}
+
+
+// A widget for the characters card which might be clicked to remove duplicates
+Widget charactersCard({required List<String> characters,required String char, required bool allDuplicateRemoved, required void Function()? onTap}){
+  return GestureDetector(
+        onTap: allDuplicateRemoved
+            ? null: onTap,
+        child: SizedBox(
+          width: 70.w,
+          height: 60.h,
+          child: Card(
+            color: Colors.blue,
+            child: Padding(
+              padding: EdgeInsets.all(8.w),
+              child: Center(child: reusableText(
+                  text: char,
+                  color: Colors.white,
+                  fontSize: 24.sp)),
+            ),
+          ),
+        ),
+      );
+
+    }
+

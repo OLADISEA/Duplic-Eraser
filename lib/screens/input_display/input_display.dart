@@ -33,29 +33,23 @@ class _DisplayUserInputsState extends State<DisplayUserInputs> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0XFFFAFAFA),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            margin: EdgeInsets.only(top: 40.h,left: 31.w,right: 31.w),
+            margin: EdgeInsets.only(top: 40.h,left: 10.w),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                backArrow(context),
-                SizedBox(width: 90.w,),
-                reusableText(text: "History",fontSize: 20.sp)
+                backArrow(context),//An arrow to go back to the first page
+                SizedBox(width: 80.w,),
+                reusableText(text: "History",fontSize: 24.sp)
               ],
             ),
-          ),//An arrow to go back to the first page
-          Divider(
-            thickness: 2,
           ),
-          SizedBox(height: 10.h,),
-          Padding(
-            padding: EdgeInsets.only(left: 31.w,right: 31.w),
-            child: reusableText(text: "The entire strings entered are displayed below:",fontSize: 24.sp),
-          ),
-          SizedBox(height: 10.h,),
+          Container(
+              child: appDivider()),
           // BlocBuilder to build UI based on InputDisplayBloc state
           BlocBuilder<InputDisplayBloc, InputDisplayState>(
                     builder: (BuildContext context, state) {
@@ -66,22 +60,18 @@ class _DisplayUserInputsState extends State<DisplayUserInputs> {
                         );
                       } else {
                         return Expanded(
-                          child: ListView.builder(
+                          child: ListView.separated(
                             itemCount: state.userInputs.length,
+                            separatorBuilder: (context, index) => const Divider(),
                             itemBuilder: (context, index) {
                               final userInputs = state.userInputs.reversed.toList();
                               final userInput = userInputs[index];
                               return Container(
-                                margin: EdgeInsets.only(top: 10.h,left: 31.w,right: 31.w),
-                                height: 50.h,
-                                child: Card(
-                                  elevation: 4.5,
-                                  shadowColor: Colors.grey.withOpacity(0.8),
-                                  // Display user input text
-                                  child: Center(child: reusableText(
-                                      text: userInput.inputString,
-                                      fontSize: 20.sp)),
-                                ),
+                                padding: EdgeInsets.only(left: 10.w,right: 10.w),
+                                height: 45.h,
+                                child: Center(child: reusableText(
+                                    text: userInput.inputString,
+                                    fontSize: 20.sp)),
                               );
                             },
                           ),

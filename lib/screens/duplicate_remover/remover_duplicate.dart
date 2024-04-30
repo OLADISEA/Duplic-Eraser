@@ -51,18 +51,15 @@ class _RemoveDuplicateState extends State<RemoveDuplicate> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: const Color(0XFFFAFAFA),
         body: SingleChildScrollView(
           child: BlocConsumer<InputBloc,InputState>(
             builder: (BuildContext context, InputState state) {
               if(state is InputSuccess){
-                print("The state is input success state");
-          
                 userInput = state.inputString;//getting the user input value
                 modifiedString = state.inputString;// getting the modified string value
                 //converting the characters to a list so that each can be separated in a card
                 characters = state.inputString.split("");
-          
-          
               }
               if(state is UpdatedStringState){
                 print("The state is updated string state");
@@ -71,55 +68,57 @@ class _RemoveDuplicateState extends State<RemoveDuplicate> {
                 characters = state.characters;//access the characters from the state
                 allDuplicateRemoved = !state.isDuplicate;// Update flag based on state
               }
-              return Container(
-                margin: EdgeInsets.only(top: 15.h,left: 24.w,right: 24.w),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    backArrow(context),// A custom widget for back button
-                    SizedBox(height: 20.h,),
-                    informationText(userInput: userInput,modifiedString: modifiedString),
-                    reusableText(
-                        text: "Click on any character you will like to remove its associated duplicate",
-                        fontSize: 19.sp),
-                    SizedBox(height: 30.h,),
-                    Wrap(
-                      spacing: 10.w,
-                      runSpacing: 10.w,
-                      children: characters.asMap().entries.map((entry) {
-                        final int index = entry.key;
-                        final char = entry.value;
-                        return GestureDetector(
-                          onTap: allDuplicateRemoved
-                              ? null:(){
-                            //Trigger the remove duplicate events to remove duplicate if any whenever a card is pressed
-                            context.read<InputBloc>().add(RemoveDuplicateEvents(
-                                char: char,
-                                characters: characters,
-                                index: index
-                            ));
-                          },
-                          child: SizedBox(
-                            width: 70.w,
-                            height: 40.h,
-                            child: Card(
-                              color: Colors.blue,
-                              child: Padding(
-                                padding: EdgeInsets.all(8.w),
-                                child: Center(child: reusableText(
-                                    text: char,
-                                    color: Colors.white,
-                                    fontSize: 20.sp)),
-                              ),
-                            ),
-                          ),
-                        );
-          
-                      }).toList(),
-          
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(top: 15.h,left: 24.w,right: 24.w),
+                    child: Row(
+                      children: [
+                        backArrow(context),
+                        SizedBox(width: 50.w,),
+                        reusableText(text: "Duplic Eraser",fontSize: 27.sp,fontWeight: FontWeight.w800)
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                 appDivider(),// A custom widget for back button
+                  Container(
+                    margin: EdgeInsets.only(top: 15.h,left: 24.w,right: 24.w),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        informationText(userInput: userInput,modifiedString: modifiedString),
+                        SizedBox(height: 20.h,),
+                        Wrap(
+                          spacing: 10.w,
+                          runSpacing: 15.w,
+                          children: characters.asMap().entries.map((entry) {
+                            final int index = entry.key;
+                            final char = entry.value;
+                            return charactersCard(
+                              characters: characters,
+                              char: char,
+                              allDuplicateRemoved: allDuplicateRemoved,
+                              onTap: ()
+                            {
+                              //Trigger the remove duplicate events to remove duplicate if any whenever a card is pressed
+                              context.read<InputBloc>().add(
+                                  RemoveDuplicateEvents(
+                                      char: char,
+                                      characters: characters,
+                                      index: index
+                                  )
+                              );
+                            });
+
+                          }).toList(),
+
+                        ),
+                      ],
+                    ),
+                  ),
+
+                ],
               );
             },
             listener: (BuildContext context, state) async{
