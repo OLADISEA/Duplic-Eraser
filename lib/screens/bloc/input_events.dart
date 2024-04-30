@@ -5,8 +5,12 @@ class SubmitButtonPressed extends InputEvents{
   SubmitButtonPressed({required this.input});
 }
 
-// class CloseInputSuccess extends InputEvents{}
-
+class CheckDuplicateEvents extends InputEvents{
+  final String char;
+  final List<String> characters;
+  final int index;
+  CheckDuplicateEvents({required this.char, required this.characters,required this.index});
+}
 class RemoveDuplicateEvents extends InputEvents{
   final String char;
   final List<String> characters;
@@ -17,4 +21,9 @@ class RemoveDuplicateEvents extends InputEvents{
 class ConfirmAlphabetEvents extends InputEvents{
   final String characters;
   ConfirmAlphabetEvents({required this.characters});
+}
+
+class StoreInputEvents extends InputEvents{
+  final String userInputs;
+  StoreInputEvents({required this.userInputs});
 }
