@@ -11,6 +11,4 @@ class UserInput{
   //user input string(The String of alphabets)
   late String inputString;
 
-  //string left after user Tap on one or more cards
-  late String stringLeft;
 }
