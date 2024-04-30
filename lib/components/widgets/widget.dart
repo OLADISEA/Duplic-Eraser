@@ -150,7 +150,6 @@ Widget informationText({required String userInput, required String modifiedStrin
             ),
           ),
           SizedBox(width: 50.w),
-          
           Expanded(
               flex: 2,
               child: reusableText(text: "click to remove duplicates",fontSize: 15.sp,color: Colors.blue))

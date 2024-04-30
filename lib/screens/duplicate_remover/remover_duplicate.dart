@@ -80,7 +80,6 @@ class _RemoveDuplicateState extends State<RemoveDuplicate> {
                         Expanded(
                             child: backArrow(context)),
                         SizedBox(width: 30.w,),
-                        
                         Expanded(
                             flex: 3,
                             child: reusableText(text: "Duplic Eraser",fontSize: 27.sp,fontWeight: FontWeight.w800))

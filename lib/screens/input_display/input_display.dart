@@ -44,7 +44,7 @@ class _DisplayUserInputsState extends State<DisplayUserInputs> {
               children: [
                 backArrow(context),//An arrow to go back to the first page
                 SizedBox(width: 80.w,),
-                reusableText(text: "History",fontSize: 24.sp)
+                reusableText(text: "History",fontSize: 24.sp,fontWeight: FontWeight.w700)
               ],
             ),
           ),
