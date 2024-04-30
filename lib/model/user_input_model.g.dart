@@ -21,11 +21,6 @@ const UserInputSchema = CollectionSchema(
       id: 0,
       name: r'inputString',
       type: IsarType.string,
-    ),
-    r'stringLeft': PropertySchema(
-      id: 1,
-      name: r'stringLeft',
-      type: IsarType.string,
     )
   },
   estimateSize: _userInputEstimateSize,
@@ -49,7 +44,6 @@ int _userInputEstimateSize(
 ) {
   var bytesCount = offsets.last;
   bytesCount += 3 + object.inputString.length * 3;
-  bytesCount += 3 + object.stringLeft.length * 3;
   return bytesCount;
 }
 
@@ -60,7 +54,6 @@ void _userInputSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeString(offsets[0], object.inputString);
-  writer.writeString(offsets[1], object.stringLeft);
 }
 
 UserInput _userInputDeserialize(
@@ -72,7 +65,6 @@ UserInput _userInputDeserialize(
   final object = UserInput();
   object.id = id;
   object.inputString = reader.readString(offsets[0]);
-  object.stringLeft = reader.readString(offsets[1]);
   return object;
 }
 
@@ -84,8 +76,6 @@ P _userInputDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readString(offset)) as P;
-    case 1:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -369,140 +359,6 @@ extension UserInputQueryFilter
       ));
     });
   }
-
-  QueryBuilder<UserInput, UserInput, QAfterFilterCondition> stringLeftEqualTo(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'stringLeft',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<UserInput, UserInput, QAfterFilterCondition>
-      stringLeftGreaterThan(
-    String value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'stringLeft',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<UserInput, UserInput, QAfterFilterCondition> stringLeftLessThan(
-    String value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'stringLeft',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<UserInput, UserInput, QAfterFilterCondition> stringLeftBetween(
-    String lower,
-    String upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'stringLeft',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<UserInput, UserInput, QAfterFilterCondition>
-      stringLeftStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'stringLeft',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<UserInput, UserInput, QAfterFilterCondition> stringLeftEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'stringLeft',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<UserInput, UserInput, QAfterFilterCondition> stringLeftContains(
-      String value,
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'stringLeft',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<UserInput, UserInput, QAfterFilterCondition> stringLeftMatches(
-      String pattern,
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'stringLeft',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<UserInput, UserInput, QAfterFilterCondition>
-      stringLeftIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'stringLeft',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<UserInput, UserInput, QAfterFilterCondition>
-      stringLeftIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'stringLeft',
-        value: '',
-      ));
-    });
-  }
 }
 
 extension UserInputQueryObject
@@ -521,18 +377,6 @@ extension UserInputQuerySortBy on QueryBuilder<UserInput, UserInput, QSortBy> {
   QueryBuilder<UserInput, UserInput, QAfterSortBy> sortByInputStringDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'inputString', Sort.desc);
-    });
-  }
-
-  QueryBuilder<UserInput, UserInput, QAfterSortBy> sortByStringLeft() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'stringLeft', Sort.asc);
-    });
-  }
-
-  QueryBuilder<UserInput, UserInput, QAfterSortBy> sortByStringLeftDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'stringLeft', Sort.desc);
     });
   }
 }
@@ -562,18 +406,6 @@ extension UserInputQuerySortThenBy
       return query.addSortBy(r'inputString', Sort.desc);
     });
   }
-
-  QueryBuilder<UserInput, UserInput, QAfterSortBy> thenByStringLeft() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'stringLeft', Sort.asc);
-    });
-  }
-
-  QueryBuilder<UserInput, UserInput, QAfterSortBy> thenByStringLeftDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'stringLeft', Sort.desc);
-    });
-  }
 }
 
 extension UserInputQueryWhereDistinct
@@ -582,13 +414,6 @@ extension UserInputQueryWhereDistinct
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'inputString', caseSensitive: caseSensitive);
-    });
-  }
-
-  QueryBuilder<UserInput, UserInput, QDistinct> distinctByStringLeft(
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'stringLeft', caseSensitive: caseSensitive);
     });
   }
 }
@@ -604,12 +429,6 @@ extension UserInputQueryProperty
   QueryBuilder<UserInput, String, QQueryOperations> inputStringProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'inputString');
-    });
-  }
-
-  QueryBuilder<UserInput, String, QQueryOperations> stringLeftProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'stringLeft');
     });
   }
 }
