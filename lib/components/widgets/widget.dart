@@ -146,7 +146,7 @@ Widget informationText({required String userInput, required String modifiedStrin
           Expanded(
             child: reusableText(
                 text: "Characters",
-                fontSize: 18.sp,fontWeight: FontWeight.w600
+                fontSize: 16.sp,fontWeight: FontWeight.w600
             ),
           ),
           SizedBox(width: 50.w),
