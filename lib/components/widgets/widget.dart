@@ -1,5 +1,3 @@
-import "dart:ui";
-
 import "package:flutter/material.dart";
 import "package:flutter_screenutil/flutter_screenutil.dart";
 
@@ -18,16 +16,23 @@ Widget reusableText({
 }
 
 
+
 Widget textField({
   required String text,
   required TextEditingController controller,
   double fontSize = 15,
-  required Function() onChangedValue}){
+  FocusNode? focusNode,
+  required Function() onChangedValue
+}){
   return Container(
-      margin: EdgeInsets.only(top: 20),
+      width: 280.w,
+      margin: EdgeInsets.only(top: 5.h),
       child: TextField(
         controller: controller,
+        focusNode: focusNode,
         onChanged: (value){
+          value = controller.text.toLowerCase();
+          controller.text = value;
           onChangedValue();
         },
         decoration: InputDecoration(
@@ -42,19 +47,20 @@ Widget textField({
           enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5),
           borderSide: const BorderSide(
-          color: Colors.purple
+          color: Color(0XFFCAC9D9)
           ),
           )
         ),
       ));
 }
 
+
 Widget generalButton({required String text,required void Function() onTap}){
   return InkWell(
     onTap: onTap,
     child: Container(
-      margin: EdgeInsets.only(left: 24.w),
-      width: 250.w,
+      //margin: EdgeInsets.only(left: 15.w),
+      width: 280.w,
       height: 40.h,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.r),
@@ -68,9 +74,9 @@ Widget generalButton({required String text,required void Function() onTap}){
 
 }
 
+
 Widget backArrow(BuildContext context){
   return Container(
-    margin: EdgeInsets.only(left: 20.w),
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(5.r),
       border: Border.all(
@@ -83,5 +89,32 @@ Widget backArrow(BuildContext context){
         },
         icon: Icon(Icons.arrow_back,size: 27.sp,),
     ),
+  );
+}
+
+
+Widget titlePage({required String text, required String image}){
+  return  Padding(
+    padding: EdgeInsets.only(left: 90.w),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Image.asset(image,width: 50.w,),
+        SizedBox(height: 20.w,),
+        reusableText(text: text,fontSize: 18.sp,fontWeight: FontWeight.w700),
+      ],
+    ),
+  );
+}
+
+Widget informationText({required String userInput, required String modifiedString}){
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      reusableText(text: "User Input Entered: $userInput",fontSize: 20.sp),
+      SizedBox(height: 20.h,),
+      reusableText(text: "Modified String: $modifiedString",fontSize: 20.sp),
+      SizedBox(height: 30.h,),
+    ],
   );
 }
