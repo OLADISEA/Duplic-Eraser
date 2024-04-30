@@ -16,4 +16,3 @@ class InputError extends InputState{
 
   InputError({this.alphabetError = "", this.emptyStringError=""});
 }
-// class RemoveDuplicateState extends InputState{}
