@@ -15,7 +15,7 @@ class UserInputDatabase extends ChangeNotifier{
 
 
 
-  //CRUD OPERATIONS
+  //OPERATIONS
 
   //List of strings entered by the user
   final List<UserInput> currentInputList = [];
@@ -67,13 +67,4 @@ class UserInputDatabase extends ChangeNotifier{
     fetchUserInputs();
   }
 
-  //Delete UserInput
-  // Future<void> deleteHabit(int id) async{
-  //   await isar.writeTxn(() async{
-  //     await isar.userInputs.delete(id);
-  //   });
-  //
-  //   //re-read from the database
-  //   fetchUserInputs();
-  //}
 }
