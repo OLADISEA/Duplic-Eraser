@@ -1,17 +1,19 @@
 import 'package:audioplayers/audioplayers.dart';
-import 'package:duplic_eraser/common/widgets/widget.dart';
 import 'package:duplic_eraser/screens/bloc/input_events.dart';
+import 'package:duplic_eraser/screens/input_display/input_display.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 
+import '../../components/widgets/widget.dart';
 import '../bloc/input_bloc.dart';
 import '../bloc/input_states.dart';
 
 class RemoveDuplicate extends StatefulWidget {
-  RemoveDuplicate({super.key});
+  final String originalString;
+  const RemoveDuplicate({required this.originalString,super.key});
 
   @override
   State<RemoveDuplicate> createState() => _RemoveDuplicateState();
@@ -20,57 +22,76 @@ class RemoveDuplicate extends StatefulWidget {
 class _RemoveDuplicateState extends State<RemoveDuplicate> {
   TextEditingController controller = TextEditingController();
 
-  List<String> characters = [];
+  List<String> characters = [];// Stores characters of the string
+  String userInput = ''; // Stores the original user input
+  String modifiedString = ''; // Stores the modified string after duplicate removal
 
   final player = AudioPlayer();
 
   @override
-  void dispose() {
-    super.dispose();
-    player.dispose();
+  void initState() {
+    super.initState();
+
+    '''The reason for this is to detect scenarios where the user entered strings without duplicates.
+    The first character in the string is accessed and we will try to remove it and call the duplicate 
+    function in the bloc state which will in turn check if there is any duplicate character left''';
+    context.read<InputBloc>().add(CheckDuplicateEvents(
+        char: widget.originalString[0],
+        characters: widget.originalString.split(""),
+        index: 0
+    ));
   }
 
-  // void removeDuplicates(String pressedChar){
+  @override
+  void dispose() {
+    super.dispose();
+    player.dispose();// Dispose audio player when done
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: 10.h,),
-            backArrow(context),
-            reusableText(text: "Here, you can click on any duplicate string you will like to remove",fontSize: 19.sp),
-            BlocConsumer<InputBloc,InputState>(
-
-              builder: (BuildContext context, InputState state) {
-
-                if(state is InputSuccess){
-                  print("The state is true");
-
-                  characters = state.inputString.split("");
-                  print("The actual char is $characters");
-
-                }
-                if(state is UpdatedStringState){
-                  print("The state is very true");
-
-                  characters = state.characters;
-                  print("The actual char is $characters");
-                }
-                return Column(
+        body: SingleChildScrollView(
+          child: BlocConsumer<InputBloc,InputState>(
+            builder: (BuildContext context, InputState state) {
+              if(state is InputSuccess){
+                print("The state is input success state");
+          
+                userInput = state.inputString;//getting the user input value
+                modifiedString = state.inputString;// getting the modified string value
+                //converting the characters to a list so that each can be separated in a card
+                characters = state.inputString.split("");
+          
+          
+              }
+              if(state is UpdatedStringState){
+                print("The state is updated string state");
+                //converting the character back to a list on storing it in the modified sting variable
+                modifiedString = state.characters.join();
+                characters = state.characters;//access the characters from the state
+              }
+              return Container(
+                margin: EdgeInsets.only(top: 15.h,left: 24.w,right: 24.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 50,),
+                    backArrow(context),// A custom widget for back button
+                    SizedBox(height: 20.h,),
+                    informationText(userInput: userInput,modifiedString: modifiedString),
+                    reusableText(
+                        text: "Click on any character you will like to remove its associated duplicate",
+                        fontSize: 19.sp),
+                    SizedBox(height: 30.h,),
                     Wrap(
-                      spacing: 5.0,
-                      runSpacing: 8.0,
+                      spacing: 5.w,
+                      runSpacing: 8.w,
                       children: characters.asMap().entries.map((entry) {
                         final int index = entry.key;
                         final char = entry.value;
-                        //print(char);
                         return GestureDetector(
                           onTap: (){
-                            print("pressed");
+                            //Trigger the remove duplicate events to remove duplicate if any whenever a card is pressed
                             context.read<InputBloc>().add(RemoveDuplicateEvents(
                                 char: char,
                                 characters: characters,
@@ -78,47 +99,58 @@ class _RemoveDuplicateState extends State<RemoveDuplicate> {
                             ));
                           },
                           child: Container(
-                            margin: EdgeInsets.only(left: 28.w),
+                            margin: EdgeInsets.only(left: 18.w),
                             width: 50.w,
                             height: 40.h,
                             child: Card(
                               color: Colors.purple,
                               child: Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Center(child: reusableText(text: char,color: Colors.white,fontSize: 18.sp)),
+                                padding: EdgeInsets.all(8.w),
+                                child: Center(child: reusableText(
+                                    text: char,
+                                    color: Colors.white,
+                                    fontSize: 18.sp)),
                               ),
                             ),
                           ),
                         );
-
+          
                       }).toList(),
-
+          
                     ),
                   ],
-                );
-              },
-              listener: (BuildContext context, state) async{
-                if(state is UpdatedStringState){
-                  print("Updated String State");
-                  final checkDuplicate = state.isDuplicate;
-                  if(!checkDuplicate){
-                    print("All duplicate removed");
-                    Fluttertoast.showToast(
-                        msg: "All Duplicates have been removed",
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.CENTER,
-                        timeInSecForIosWeb: 2,
-                        backgroundColor: Colors.blue,
-                        textColor: Colors.white,
-                        fontSize: 16.0
-                    );
-                    await player.play(AssetSource("audio/faded.mp3"));
-                  }
-
+                ),
+              );
+            },
+            listener: (BuildContext context, state) async{
+              if(state is UpdatedStringState){
+                final checkDuplicate = state.isDuplicate;
+                //  Display a toast message when there is no duplicate remaining
+                if(!checkDuplicate){
+                  Fluttertoast.showToast(
+                      msg: "All Duplicates have been removed",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      timeInSecForIosWeb: 2,
+                      backgroundColor: Colors.blue,
+                      textColor: Colors.white,
+                      fontSize: 16.0.sp
+                  );
+                  //Store the user input to the database
+                  context.read<InputBloc>().add(StoreInputEvents(userInputs: userInput));
+                  //Play an audio after the duplicate has been removed
+                  await player.play(AssetSource("audio/faded.mp3"));
+                  // Delay navigation for 3 seconds
+                  await Future.delayed(const Duration(seconds: 4));
+                  // Navigate to the screen where all the user inputs ever entered will be displayed
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => const DisplayUserInputs()),
+                  );
                 }
-              },
-            ),
-          ],
+          
+              }
+            },
+          ),
         ),
       ),
     );
