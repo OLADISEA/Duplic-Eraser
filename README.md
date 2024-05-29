@@ -1,4 +1,4 @@
-# duplic_eraser - Odun1
+# duplic_eraser
 
 Duplic Eraser
 
