@@ -1,4 +1,4 @@
-# Duplic-Eraser - Odun
+# Duplic-Eraser - Odun1
 This app is designed to help users remove duplicate characters from strings
 
 
